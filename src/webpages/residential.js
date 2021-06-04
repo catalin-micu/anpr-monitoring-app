@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Footer, Header } from './../components/headerAndFooter';
 
 
 const Residential = () => {
@@ -8,8 +9,8 @@ const Residential = () => {
 
     return (
         <div>
-            <h1>ANPR monitoring app</h1>
-            <h3>This is the residential page</h3>
+            <Header/>
+            <Footer/>
         </div>
     );
 };

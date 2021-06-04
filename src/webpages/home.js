@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { Typography , AppBar, Card, CardActions, CardContent, CardMedia, CssBaseline,
      Grid, Toolbar, Container, Button } from '@material-ui/core';
-import EmojiTransportationTwoToneIcon from '@material-ui/icons/EmojiTransportationTwoTone';
-import useStyle from './../styles'
+import useStyle from './../styles';
+import { CommercialButton, ResidentialButton } from './../components/buttons';
+import { Footer, Header } from './../components/headerAndFooter';
 
 
 const Home = () => {
@@ -12,18 +13,14 @@ const Home = () => {
 
     const classes = useStyle();
 
+    // todo: gray backgorund
     return (
         <div>
-            <AppBar position="relative">
-                <Toolbar>
-                    <EmojiTransportationTwoToneIcon className={classes.icon}/>
-                    <Typography variant="h6">ANPR administrative app</Typography>
-                </Toolbar>
-            </AppBar>
+            <Header/>
 
             <main>
                 <Container maxWidth="md" className={classes.container}>
-                    <Typography variant="h2" align="center" color="textPrimary" gutterButton paragraph>
+                    <Typography variant="h2" align="center" color="textPrimary" paragraph>
                         ANPR monitoring interface
                     </Typography>
                     <Typography variant="h5" align="center" color="textSecondary">
@@ -41,20 +38,17 @@ const Home = () => {
                     <div>
                         <Grid container spacing={2} justify="center">
                             <Grid item>
-                                <Button variant="contained" color="secondary" size="large" className={classes.button}>
-                                    Residential system
-                                </Button>
+                               <ResidentialButton/>
                             </Grid>
 
                             <Grid item>
-                                <Button variant="contained" color="secondary" size="large" className={classes.button}>
-                                    Commercial system
-                                </Button>
+                                <CommercialButton/>
                             </Grid>
                         </Grid>
                     </div>
                 </Container>
             </main>
+            <Footer/>
         </div>
         
     );
