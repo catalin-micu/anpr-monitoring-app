@@ -4,6 +4,9 @@ import { Typography , AppBar, Card, CardActions, CardContent, CardMedia, CssBase
 import useStyle from './../styles';
 import { CommercialButton, ResidentialButton } from './../components/buttons';
 import { Footer, Header } from './../components/headerAndFooter';
+import python from './../images/python.gif';
+import react from './../images/react.gif';
+import GifCard from '../components/gifCard';
 
 
 const Home = () => {
@@ -15,10 +18,10 @@ const Home = () => {
 
     // todo: gray backgorund
     return (
-        <div>
+        <div className={classes.main}>
             <Header/>
 
-            <main>
+            <main >
                 <Container maxWidth="md" className={classes.container}>
                     <Typography variant="h2" align="center" color="textPrimary" paragraph>
                         ANPR monitoring interface
@@ -48,6 +51,12 @@ const Home = () => {
                     </div>
                 </Container>
             </main>
+            <Container >
+                <Grid container spacing={5} justify="center">
+                    <GifCard gif={python} cardText="Python implemented backend" />
+                    <GifCard gif={react} cardText="React implemented frontend" />
+                </Grid>
+            </Container>
             <Footer/>
         </div>
         
