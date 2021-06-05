@@ -1,34 +1,25 @@
 import { Dialog, DialogContent, DialogTitle, Typography } from '@material-ui/core';
 import React from 'react';
-import SignInRes from './signInRes';
-import SignInCom from './signInCom';
+import SignIn from './signIn';
 
 
-export function LoginFormRes(props) {
+export default function LoginForm(props) {
     const {type, openPopup, setOpenPopup} = props;
+    var title = '';
+    if (type === 'res') {
+        title = 'Residential';
+    }
+    else {
+        title = 'Commercial';
+    }
 
     return (
         <Dialog open={openPopup}>
             <DialogTitle>
-                <Typography variant="button" color="secondary" align="center">Residential system authentification</Typography>
+                <Typography variant="button" color="secondary" align="center">{title} system authentification</Typography>
             </DialogTitle>
             <DialogContent>
-                <SignInRes type={type} />
-            </DialogContent>
-        </Dialog>
-    );
-};
-
-export function LoginFormCom(props) {
-    const {type, openPopup, setOpenPopup} = props;
-
-    return (
-        <Dialog open={openPopup}>
-            <DialogTitle>
-                <Typography variant="button" color="secondary" align="center">Commercial system authentification</Typography>
-            </DialogTitle>
-            <DialogContent>
-                <SignInCom type={type} />
+                <SignIn type={type} />
             </DialogContent>
         </Dialog>
     );

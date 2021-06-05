@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInRes(props) {
+export default function SignIn(props) {
     const {type} = props;
     const history = useHistory();
     const classes = useStyles();

@@ -7,7 +7,7 @@ import { Footer, Header } from './../components/headerAndFooter';
 import python from './../images/python.gif';
 import react from './../images/react.gif';
 import GifCard from '../components/gifCard';
-import { LoginFormRes, LoginFormCom } from '../components/loginForm'
+import LoginForm from '../components/loginForm'
 
 
 const Home = () => {
@@ -45,12 +45,12 @@ const Home = () => {
                         <Grid container spacing={2} justify="center">
                             <Grid item>
                                <ResidentialButton callback={() => setOpenPopupRes(true)} />
-                               <LoginFormRes openPopup={openPopupRes} setOpenPopup={setOpenPopupRes} type="res"></LoginFormRes>
+                               <LoginForm openPopup={openPopupRes} setOpenPopup={setOpenPopupRes} type="res"></LoginForm>
                             </Grid>
 
                             <Grid item>
                                 <CommercialButton callback={() => setOpenPopupCom(true)} />
-                                <LoginFormCom openPopup={openPopupCom} setOpenPopup={setOpenPopupCom} type="com"></LoginFormCom>
+                                <LoginForm openPopup={openPopupCom} setOpenPopup={setOpenPopupCom} type="com"></LoginForm>
                             </Grid>
                         </Grid>
                     </div>
