@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography , AppBar, Card, CardActions, CardContent, CardMedia, CssBaseline,
      Grid, Toolbar, Container, Button } from '@material-ui/core';
 import useStyle from './../styles';
@@ -7,6 +7,7 @@ import { Footer, Header } from './../components/headerAndFooter';
 import python from './../images/python.gif';
 import react from './../images/react.gif';
 import GifCard from '../components/gifCard';
+import { LoginFormRes, LoginFormCom } from '../components/loginForm'
 
 
 const Home = () => {
@@ -15,8 +16,10 @@ const Home = () => {
     });
 
     const classes = useStyle();
+    const [openPopupRes, setOpenPopupRes] = useState(false);
+    const [openPopupCom, setOpenPopupCom] = useState(false);
 
-    // todo: gray backgorund
+
     return (
         <div className={classes.main}>
             <Header/>
@@ -41,11 +44,13 @@ const Home = () => {
                     <div>
                         <Grid container spacing={2} justify="center">
                             <Grid item>
-                               <ResidentialButton/>
+                               <ResidentialButton callback={() => setOpenPopupRes(true)} />
+                               <LoginFormRes openPopup={openPopupRes} setOpenPopup={setOpenPopupRes} type="res"></LoginFormRes>
                             </Grid>
 
                             <Grid item>
-                                <CommercialButton/>
+                                <CommercialButton callback={() => setOpenPopupCom(true)} />
+                                <LoginFormCom openPopup={openPopupCom} setOpenPopup={setOpenPopupCom} type="com"></LoginFormCom>
                             </Grid>
                         </Grid>
                     </div>

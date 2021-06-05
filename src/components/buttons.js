@@ -4,22 +4,22 @@ import { Typography , AppBar, Card, CardActions, CardContent, CardMedia, CssBase
 import useStyle from './../styles';
 
 
-const ResidentialButton = () => {
+const ResidentialButton = (props) => {
     const classes = useStyle();
     const history = useHistory();
 
     function handleClick() {
-        history.push('/residential');
+        history.push('/residential'); // no longer neede i think
     }
 
     return (
-        <Button variant="outlined" color="secondary" size="large" className={classes.button} onClick={handleClick}>
+        <Button variant="outlined" color="secondary" size="large" className={classes.button} onClick={props.callback}>
             Residential system
         </Button>
     );
 };
 
-const CommercialButton = () => {
+const CommercialButton = (props) => {
     const classes = useStyle();
     const history = useHistory();
 
@@ -28,7 +28,7 @@ const CommercialButton = () => {
     }
 
     return (
-        <Button variant="outlined" color="secondary" size="large" className={classes.button} onClick={handleClick}>
+        <Button variant="outlined" color="secondary" size="large" className={classes.button} onClick={props.callback}>
             Commercial system
         </Button>
     );
