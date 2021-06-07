@@ -5,6 +5,11 @@ import SignIn from './signIn';
 
 export default function LoginForm(props) {
     const {type, openPopup, setOpenPopup} = props;
+
+    const handleClose = () => {
+        setOpenPopup(false);
+    };
+
     var title = '';
     if (type === 'res') {
         title = 'Residential';
@@ -14,7 +19,7 @@ export default function LoginForm(props) {
     }
 
     return (
-        <Dialog open={openPopup}>
+        <Dialog open={openPopup} onClose={handleClose}>
             <DialogTitle>
                 <Typography variant="button" color="secondary" align="center">{title} system authentification</Typography>
             </DialogTitle>

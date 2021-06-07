@@ -9,7 +9,8 @@ const useStyle = makeStyles((theme) => ({
     container: {
         backgroundColor: theme.palette.background.paper,
         padding: theme.spacing(8, 0, 8),
-        borderRadius: '55px'
+        borderRadius: '55px',
+        marginTop: '9px'
     },
     icon: {
         marginRight: theme.spacing(2),
