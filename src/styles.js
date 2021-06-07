@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
+const drawerWidth = 240;
 
 const useStyle = makeStyles((theme) => ({
     main: {
@@ -53,6 +54,12 @@ const useStyle = makeStyles((theme) => ({
     cardContent: {
         position: 'relative',
         bottom: 0
+    },
+    drawer: {
+        width: drawerWidth
+    },
+    residentialRoot: {
+        display: 'flex'
     }
 }));
 

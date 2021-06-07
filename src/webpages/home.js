@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography , AppBar, Card, CardActions, CardContent, CardMedia, CssBaseline,
-     Grid, Toolbar, Container, Button } from '@material-ui/core';
+import { Typography , Grid, Container } from '@material-ui/core';
 import useStyle from './../styles';
 import { CommercialButton, ResidentialButton } from './../components/buttons';
 import { Footer, Header } from './../components/headerAndFooter';
