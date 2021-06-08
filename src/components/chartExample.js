@@ -32,7 +32,7 @@ export default function Residential() {
 
     return (
       <ResponsiveContainer >
-        <LineChart width={500} height={300}>
+        <LineChart width={500} height={100}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="category" type="category" allowDuplicatedCategory={false} />
           <YAxis dataKey="value" />

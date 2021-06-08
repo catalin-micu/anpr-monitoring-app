@@ -11,6 +11,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CREDENTIALS from '../authentificationAPI';
 import { useHistory } from 'react-router-dom';
+import { Collapse } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+
 
 function Copyright() {
   return (
@@ -52,6 +55,7 @@ export default function SignIn(props) {
 
     const [code, setCode] = useState('');
     const [pw, setPw] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
     function handleSignIn () {
         if (type === 'res') {
@@ -59,7 +63,7 @@ export default function SignIn(props) {
                 history.push('/residential');
             }
             else {
-                console.log('esti prost');
+                setErrorMsg('Invalid credentials!');
             }
         }
 
@@ -68,7 +72,7 @@ export default function SignIn(props) {
                 history.push('/commercial');
             }
             else {
-                console.log('esti prost');
+                setErrorMsg('Invalid credentials!');
             }
         }
     };
@@ -84,6 +88,13 @@ export default function SignIn(props) {
           Sign in
         </Typography>
         <form className={classes.form} noValidate>
+
+        <Collapse in={errorMsg != ""}>
+            {errorMsg != "" ? (
+            <Alert severity="error" onClose={() => { setErrorMsg(""); }}> { errorMsg }</Alert>
+            ) : null}
+        </Collapse>
+
           <TextField
             variant="outlined"
             margin="normal"
