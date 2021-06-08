@@ -23,6 +23,7 @@ import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import TextField from '@material-ui/core/TextField';
 import DateRangeOutlinedIcon from '@material-ui/icons/DateRangeOutlined';
 import Example from '../components/chartExample';
+import ZoomChart from '../components/individualChart';
 
 const drawerWidth = 260;
 
@@ -104,8 +105,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '9px'
   },
   chart: {
-      height: '200px',
-       width: '95%'
+      height: '2px',
+       width: '97%'
   },
   chartShift : {
     height: '200px',
@@ -246,30 +247,30 @@ export default function Residential() {
         <div className={classes.drawerHeader} />
 
         <Container maxWidth="md" className={classes.titleContainer}>
-            <Typography variant="h2" align="center" color="textPrimary" paragraph>
+            <Typography variant="h2" align="center" color="textPrimary" >
                 Residential system
             </Typography>
-            
+            <Typography variant="h6" align="center" color="textSecondary">
+                Dynamically monitor the activity of your access system
+            </Typography>
         </Container>
         
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-          facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-          gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-          donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-          Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-          imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-          arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-          donec massa sapien faucibus et molestie ac.
-        </Typography>
+        <Container maxWidth="sm" className={classes.titleContainer}>
+          <Typography variant="body1" align="center" color="textSecondary">
+            Expand the left side menu and insert the required parameters
+          </Typography>
+
+          {/* <Typography variant="body1" align="center" color="textSecondary">
+            You must provide a valid plate number that is registered in the database of your system and a start date for the 7-days interval of your desired monitoring
+          </Typography> */}
+        </Container>
        
         
         <div className={clsx(classes.chart, {
           [classes.chartShift]: open,
         })}>
-          <Example  />
+          {/* <Example  /> */}
+          <ZoomChart />
         </div>
         
       </main>

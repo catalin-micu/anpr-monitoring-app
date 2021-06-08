@@ -23,7 +23,6 @@ function Copyright() {
         Catalin Micu
       </Link>{' '}
       {new Date().getFullYear()}
-      {'.'}
     </Typography>
   );
 }
