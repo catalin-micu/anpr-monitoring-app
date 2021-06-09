@@ -60,6 +60,10 @@ const useStyle = makeStyles((theme) => ({
     },
     residentialRoot: {
         display: 'flex'
+    },
+    tooltip: {
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: '25px',
     }
 }));
 

@@ -1,33 +1,22 @@
 import React, { PureComponent } from 'react';
 import { Label, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceArea, ResponsiveContainer } from 'recharts';
-import { Button } from '@material-ui/core';
+import { Button, Container, Typography } from '@material-ui/core';
+import useStyle from './../styles';
 
 // valoare {1,0}; actiune {a intrat, a iesit, constant}; timestamp
-const initialData = [
-  { name: 1, cost: 1},
-  { name: 2, cost: 1},
-  { name: 3, cost: 1},
-  { name: 4, cost: 1},
-  { name: 5, cost: 0},
-  { name: 6, cost: 0},
-  { name: 7, cost: 0},
-  { name: 8, cost: 0},
-  { name: 9, cost: 1},
-  { name: 10, cost: 1},
-  { name: 11, cost: 1},
-  { name: 12, cost: 1},
-  { name: 13, cost: 1},
-  { name: 14, cost: 1},
-  { name: 15, cost: 0},
-  { name: 16, cost: 0},
-  { name: 17, cost: 0},
-  { name: 18, cost: 0},
-  { name: 19, cost: 1},
-  { name: 20, cost: 1},
-];
+
+var data2 = []
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+for (let i = 1; i < 300; i ++) {
+  data2.push( {name: i, cost: getRandomInt(2), action: 'in parcare', timestamp: 'acum'} )
+}
 
 const getAxisYDomain = (from, to, ref, offset) => {
-  const refData = initialData.slice(from - 1, to);
+  const refData = data2.slice(from - 1, to);
   let [bottom, top] = [refData[0][ref], refData[0][ref]];
   refData.forEach((d) => {
     if (d[ref] > top) top = d[ref];
@@ -38,7 +27,7 @@ const getAxisYDomain = (from, to, ref, offset) => {
 };
 
 const initialState = {
-  data: initialData,
+  data: data2,
   left: 'dataMin',
   right: 'dataMax',
   refAreaLeft: '',
@@ -47,6 +36,27 @@ const initialState = {
   bottom: 'dataMin-1',
   animation: true,
 };
+
+
+const CustomTooltip = ({ active, payload }) => {
+  const classes = useStyle();
+  if (active && payload && payload.length) {
+    return (
+      <Container className={classes.tooltip}>
+        <Typography variant="subtitle1" color="secondary">
+          Status: { payload[0]['payload']['action'] }
+        </Typography>
+        <Typography variant="subtitle1" color="secondary">
+          Timestamp: { payload[0]['payload']['timestamp'] }
+        </Typography>
+        
+      </Container>
+    );
+  }
+
+  return null;
+};
+
 
 export default class Example extends PureComponent {
 
@@ -104,11 +114,11 @@ export default class Example extends PureComponent {
 
     return (
       <div className="highlight-bar-charts" style={{ userSelect: 'none', width: '100%' }}>
-        <Button variant="outlined" color="primary" size="small" onClick={this.zoomOut.bind(this)}>
+        <Button variant="outlined" color="secondary" size="small" onClick={this.zoomOut.bind(this)}>
           Zoom Out
         </Button>
 
-        <ResponsiveContainer width="100%" height={350}>
+        <ResponsiveContainer width="100%" height={250}>
           <LineChart
             
             data={data}
@@ -120,8 +130,8 @@ export default class Example extends PureComponent {
             {/* <CartesianGrid horizontal={false} vertical={false} /> */}
             <XAxis allowDataOverflow dataKey="name" domain={[left, right]} type="number"  />
             <YAxis allowDataOverflow domain={[0, 1.2]} type="number" yAxisId="1" />
-            <Tooltip />
-            <Line yAxisId="1" type="stepAfter" dataKey="cost" stroke="#8884d8" animationDuration={2000} strokeWidth={3} />
+            <Tooltip content={<CustomTooltip  />} />
+            <Line yAxisId="1" type="stepAfter" dataKey="cost" stroke="#8884d8" animationDuration={100} strokeWidth={3} />
 
             {refAreaLeft && refAreaRight ? (
               <ReferenceArea yAxisId="1" x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.1} />

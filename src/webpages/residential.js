@@ -17,13 +17,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import EmojiTransportationTwoToneIcon from '@material-ui/icons/EmojiTransportationTwoTone';
-import { Container, Link } from '@material-ui/core';
+import { Container, Grid, Link } from '@material-ui/core';
 import { Footer } from './../components/headerAndFooter';
 import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import TextField from '@material-ui/core/TextField';
 import DateRangeOutlinedIcon from '@material-ui/icons/DateRangeOutlined';
-import Example from '../components/chartExample';
+import IndividualPie from '../components/individualPie';
 import ZoomChart from '../components/individualChart';
+import SevenBarChart from '../components/sevenBarChart';
 
 const drawerWidth = 260;
 
@@ -105,11 +106,35 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '9px'
   },
   chart: {
-      height: '2px',
-       width: '97%'
+      height: '250px',
+       width: '98%'
   },
   chartShift : {
-    height: '200px',
+    height: '250px',
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  pie: {
+    height: '250px',
+   width: '500px'
+  },
+  pieShift: {
+    height: '250px',
+    width: '500px',
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  barChart: {
+    height: '250px',
+    width: '700px'
+  },
+  barChartShift: {
+    height: '250px',
+    width: '700px',
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -259,19 +284,49 @@ export default function Residential() {
           <Typography variant="body1" align="center" color="textSecondary">
             Expand the left side menu and insert the required parameters
           </Typography>
-
-          {/* <Typography variant="body1" align="center" color="textSecondary">
-            You must provide a valid plate number that is registered in the database of your system and a start date for the 7-days interval of your desired monitoring
-          </Typography> */}
         </Container>
+        <Divider/>
        
-        
-        <div className={clsx(classes.chart, {
-          [classes.chartShift]: open,
-        })}>
-          {/* <Example  /> */}
-          <ZoomChart />
-        </div>
+       <Grid container style={{marginTop: '3px'}} direction="column" >
+          <div className={clsx(classes.chart, {
+            [classes.chartShift]: open,
+          })}>
+            <ZoomChart />
+          </div>
+          <Container maxWidth="sm" className={classes.titleContainer} style={{marginTop: '20px'}}>
+            <Typography variant="body1" align="center" color="textSecondary">
+              Monitored activity of number plate XXXXXXX
+            </Typography>
+          </Container>
+        </Grid>
+
+        <Grid container justify="center" spacing={6}>
+          <Grid item style={{marginTop: '3px'}} direction="column" alignContent="flex-start" >
+            <div className={clsx(classes.pie, {
+              [classes.pieShift]: open,
+            })}>
+              <IndividualPie />
+            </div>
+            <Container maxWidth="xs" className={classes.titleContainer} style={{marginTop: '20px'}}>
+              <Typography variant="body1" align="center" color="textSecondary">
+                Activity summary of number plate XXXXXXX
+              </Typography>
+            </Container>
+          </Grid>
+          
+          <Grid item style={{marginTop: '3px'}} direction="column" alignContent="flex-start" >
+            <div className={clsx(classes.barChart, {
+              [classes.barChartShift]: open,
+            })}>
+              <SevenBarChart />
+            </div>
+            <Container maxWidth="xs" className={classes.titleContainer} style={{marginTop: '20px'}}>
+              <Typography variant="body1" align="center" color="textSecondary">
+                Activity summary of entire parking lot
+              </Typography>
+            </Container>
+          </Grid>
+        </Grid>
         
       </main>
       
