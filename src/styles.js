@@ -64,6 +64,10 @@ const useStyle = makeStyles((theme) => ({
     tooltip: {
         backgroundColor: theme.palette.background.paper,
         borderRadius: '25px',
+    },
+    applyButton: {
+        marginLeft: 'auto',
+        marginRight: 'auto'
     }
 }));
 

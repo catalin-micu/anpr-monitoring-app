@@ -33,4 +33,24 @@ const CommercialButton = (props) => {
     );
 };
 
-export { ResidentialButton, CommercialButton };
+const IndivApplyButton = (props) => {
+    const classes = useStyle();
+
+    return (
+        <Button variant="outlined" color="secondary" size="small" className={classes.applyButton} onClick={props.callback}>
+            Apply parameters
+        </Button>
+    );
+};
+
+const LotApplyButton = (props) => {
+    const classes = useStyle();
+
+    return (
+        <Button variant="outlined" color="secondary" size="small" className={classes.applyButton} onClick={props.callback}>
+            Apply date parameter
+        </Button>
+    );
+};
+
+export { ResidentialButton, CommercialButton, IndivApplyButton, LotApplyButton };

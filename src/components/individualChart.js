@@ -2,18 +2,19 @@ import React, { PureComponent } from 'react';
 import { Label, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceArea, ResponsiveContainer } from 'recharts';
 import { Button, Container, Typography } from '@material-ui/core';
 import useStyle from './../styles';
+import { CreateData } from './../webpages/residential';
+
 
 // valoare {1,0}; actiune {a intrat, a iesit, constant}; timestamp
 
-var data2 = []
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
-for (let i = 1; i < 300; i ++) {
-  data2.push( {name: i, cost: getRandomInt(2), action: 'in parcare', timestamp: 'acum'} )
-}
+// var data2 = [];
+// function getRandomInt(max) {
+//   return Math.floor(Math.random() * max);
+// }
+// for (let i = 1; i < 336; i ++) {
+//   data2.push( {name: i, cost: getRandomInt(2), action: 'in parcare', timestamp: 'acum'} )
+// }
+var data2 = CreateData();
 
 const getAxisYDomain = (from, to, ref, offset) => {
   const refData = data2.slice(from - 1, to);
@@ -128,7 +129,7 @@ export default class Example extends PureComponent {
             onMouseUp={this.zoom.bind(this)}
           >
             {/* <CartesianGrid horizontal={false} vertical={false} /> */}
-            <XAxis allowDataOverflow dataKey="name" domain={[left, right]} type="number"  />
+            <XAxis allowDataOverflow dataKey="name" domain={[left, right]} type="number" ticks={ [48, 96, 144, 192, 240, 288, 336] } />
             <YAxis allowDataOverflow domain={[0, 1.2]} type="number" yAxisId="1" />
             <Tooltip content={<CustomTooltip  />} />
             <Line yAxisId="1" type="stepAfter" dataKey="cost" stroke="#8884d8" animationDuration={100} strokeWidth={3} />

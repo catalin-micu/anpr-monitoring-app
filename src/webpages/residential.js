@@ -17,7 +17,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import EmojiTransportationTwoToneIcon from '@material-ui/icons/EmojiTransportationTwoTone';
-import { Container, Grid, Link } from '@material-ui/core';
+import { Button, Container, Grid, Link } from '@material-ui/core';
 import { Footer } from './../components/headerAndFooter';
 import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import TextField from '@material-ui/core/TextField';
@@ -25,6 +25,9 @@ import DateRangeOutlinedIcon from '@material-ui/icons/DateRangeOutlined';
 import IndividualPie from '../components/individualPie';
 import ZoomChart from '../components/individualChart';
 import SevenBarChart from '../components/sevenBarChart';
+import { IndivApplyButton, LotApplyButton } from '../components/buttons';
+import { Collapse } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 
 const drawerWidth = 260;
 
@@ -107,7 +110,9 @@ const useStyles = makeStyles((theme) => ({
   },
   chart: {
       height: '250px',
-       width: '98%'
+       width: '98%',
+       backgroundColor: 'white',
+       borderRadius: '10px'
   },
   chartShift : {
     height: '250px',
@@ -115,13 +120,16 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    backgroundColor: 'white',
+    borderRadius: '10px'
   },
   pie: {
-    height: '250px',
-   width: '500px'
+    height: '260px',
+   width: '500px',
+   
   },
   pieShift: {
-    height: '250px',
+    height: '260px',
     width: '500px',
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
@@ -129,11 +137,13 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   barChart: {
-    height: '250px',
-    width: '700px'
+    height: '260px',
+    width: '700px',
+    backgroundColor: 'white',
+    borderRadius: '10px'
   },
   barChartShift: {
-    height: '250px',
+    height: '260px',
     width: '700px',
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
@@ -141,6 +151,19 @@ const useStyles = makeStyles((theme) => ({
     }),
   }
 }));
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+export function CreateData() {
+  var data = [];
+
+  for (let i = 1; i < 336; i ++) {
+    data.push( {name: i, cost: getRandomInt(2), action: 'in parcare', timestamp: 'acum'} )
+}
+  return data;
+}
+
+
 
 export default function Residential() {
     useEffect( () => {
@@ -149,6 +172,42 @@ export default function Residential() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
+  const [stepVrn, setStepVrn] = React.useState('');
+  const [stepDate, setStepDate] = React.useState('');
+  const [lotDate, setLotDate] = React.useState('');
+  const [errorMsg, setErrorMsg] = React.useState('');
+  const [errorMsg2, setErrorMsg2] = React.useState('');
+
+  const vrnPattern = /^[A-Z]{2}\d{2}[A-Z]{3}$|^B\d{2,3}[A-Z]{3}$|^[A-Z]{2}\d{6}$|^B\d{6}$/g;
+  const datePattern = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/g;
+
+  function handleApplyParameters () {
+    if ( datePattern.test(stepDate) && vrnPattern.test(stepVrn) ) {
+      console.log('da');
+      // setStepVrn('');
+      // setStepDate('');
+      return;
+    }
+    if (!vrnPattern.test(stepVrn)) {
+      setErrorMsg('Invalid number plate!');
+      return;
+    }
+    if (!datePattern.test(stepDate)) {
+      setErrorMsg('Invalid date!');
+      return;
+    }
+  }
+
+  function handleApplyDateParameter () {
+    if (!datePattern.test(lotDate)) {
+      setErrorMsg2('Invalid date!');
+      return;
+    }
+    else {
+      console.log('da');
+    }
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -205,6 +264,11 @@ export default function Residential() {
 
         <Typography variant="button" className={classes.sideOptionHeader} color="textSecondary">Individual chart</Typography>
         <Divider />
+        <Collapse in={errorMsg != ""}>
+            {errorMsg != "" ? (
+            <Alert severity="error" onClose={() => { setErrorMsg("") }}> { errorMsg }</Alert>
+            ) : null}
+        </Collapse>
 
         <List>
           <ListItem key="indivReg">
@@ -220,7 +284,7 @@ export default function Residential() {
             label="Number plate"
             autoFocus
             size="small"
-            // onChange={event => setCode(event.target.value)}
+            onChange={event => setStepVrn(event.target.value)}
           />
           </ListItem>
 
@@ -228,7 +292,7 @@ export default function Residential() {
             <ListItemIcon> <DateRangeOutlinedIcon/> </ListItemIcon>
             <ListItemText primary="Time interval"/>
           </ListItem>
-          <ListItem key="indivRegText">
+          <ListItem key="indivDateText">
             <TextField
             variant="outlined"
             margin="normal"
@@ -237,13 +301,22 @@ export default function Residential() {
             label="Start date(dd-mm-yyy)"
             autoFocus
             size="small"
-            // onChange={event => setCode(event.target.value)}
+            onChange={event => setStepDate(event.target.value)}
           />
+          </ListItem>
+          <ListItem key="indivApply" alignItems="center">
+            <IndivApplyButton callback={handleApplyParameters} />
           </ListItem>
         </List>
 
         <Typography variant="button" className={classes.sideOptionHeader} color="textSecondary">Parking lot chart</Typography>
         <Divider />
+
+        <Collapse in={errorMsg2 != ""}>
+            {errorMsg2 != "" ? (
+            <Alert severity="error" onClose={() => { setErrorMsg2("") }}> { errorMsg2 }</Alert>
+            ) : null}
+        </Collapse>
 
         <List>
         <ListItem key="indivDate">
@@ -259,8 +332,11 @@ export default function Residential() {
             label="Start date(dd-mm-yyy)"
             autoFocus
             size="small"
-            // onChange={event => setCode(event.target.value)}
+            onChange={event => setLotDate(event.target.value)}
           />
+          </ListItem>
+          <ListItem key="lotApply" alignItems="center">
+            <LotApplyButton callback={handleApplyDateParameter} />
           </ListItem>
         </List>
       </Drawer>
