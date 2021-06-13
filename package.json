@@ -1,4 +1,5 @@
 {
+  
   "name": "anpr-monitoring-app",
   "version": "0.1.0",
   "private": true,
@@ -29,6 +30,7 @@
       "react-app/jest"
     ]
   },
+  
   "browserslist": {
     "production": [
       ">0.2%",

@@ -163,31 +163,55 @@ export function CreateData() {
   return data;
 }
 
-
-
 export default function Residential() {
     useEffect( () => {
         document.title = 'ANPR residential monitoring app'
     });
+    
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const [stepVrn, setStepVrn] = React.useState('');
+  const [gotStepVrn, setGotStepVrn] = React.useState(false);
+  const [renderedVrn, setRenderedVrn] = React.useState('');
+
   const [stepDate, setStepDate] = React.useState('');
+  const [stepData, setStepData] = React.useState([]);
+
+  // useEffect(() => {
+  //   fetch('http://127.0.0.1:5000/getWeekActivity').then(response =>
+  //     response.json().then(data => {
+  //       setStepData(data);
+  //     }));
+      
+  // }, []);
+
+  // console.log(stepData);
   const [lotDate, setLotDate] = React.useState('');
   const [errorMsg, setErrorMsg] = React.useState('');
   const [errorMsg2, setErrorMsg2] = React.useState('');
+
 
   const vrnPattern = /^[A-Z]{2}\d{2}[A-Z]{3}$|^B\d{2,3}[A-Z]{3}$|^[A-Z]{2}\d{6}$|^B\d{6}$/g;
   const datePattern = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/g;
 
   function handleApplyParameters () {
     if ( datePattern.test(stepDate) && vrnPattern.test(stepVrn) ) {
-      console.log('da');
-      // setStepVrn('');
-      // setStepDate('');
-      return;
+      
+      
+      // var data = fetch('http://127.0.0.1:5000/getWeekActivity').then(response => response.json())
+      // console.log(data);
+      setGotStepVrn(true);
+      setRenderedVrn(stepVrn);
+
+      return fetch('http://127.0.0.1:5000/getWeekActivity').then(response =>
+      response.json()).then(data => {
+        setStepData(data);
+        console.log(data);
+      });
+      
     }
     if (!vrnPattern.test(stepVrn)) {
       setErrorMsg('Invalid number plate!');
@@ -367,11 +391,12 @@ export default function Residential() {
           <div className={clsx(classes.chart, {
             [classes.chartShift]: open,
           })}>
-            <ZoomChart />
+            <ZoomChart data={stepData} />
           </div>
           <Container maxWidth="sm" className={classes.titleContainer} style={{marginTop: '20px'}}>
             <Typography variant="body1" align="center" color="textSecondary">
-              Monitored activity of number plate XXXXXXX
+              {gotStepVrn ? 'Monitored activity of number plate ' + renderedVrn : 'No parameters have been set' }
+              
             </Typography>
           </Container>
         </Grid>
