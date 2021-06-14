@@ -108,7 +108,7 @@ export default class Example extends PureComponent {
             <XAxis allowDataOverflow dataKey="index" domain={[left, right]} type="number" ticks={ [48, 96, 144, 192, 240, 288, 336] } />
             <YAxis allowDataOverflow domain={[0, 1.2]} type="number" yAxisId="1" />
             <Tooltip content={<CustomTooltip  />} />
-            <Line yAxisId="1" type="stepAfter" dataKey="value" stroke="#8884d8" animationDuration={100} strokeWidth={3} />
+            <Line yAxisId="1" type="stepAfter" dataKey="value" stroke="#984063" animationDuration={2000} strokeWidth={3} />
 
             {refAreaLeft && refAreaRight ? (
               <ReferenceArea yAxisId="1" x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.1} />

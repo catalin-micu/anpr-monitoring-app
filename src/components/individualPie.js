@@ -1,10 +1,6 @@
 import React, { PureComponent } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
 
-const data = [
-  { name: 'Inside parkinglot', value: 180 },
-  { name: 'Outside parkinglot', value: 156 },
-];
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -55,6 +51,9 @@ export default class IndividualPie extends PureComponent {
 
   state = {
     activeIndex: 0,
+    data: [
+      { name: 'Default value', value: 1 },
+    ],
   };
 
   onPieEnter = (_, index) => {
@@ -64,18 +63,24 @@ export default class IndividualPie extends PureComponent {
   };
 
   render() {
+    {
+      if (this.props.data.length === 2) {
+        this.setState({data: this.props.data})
+      }
+    }
+    
     return (
       <ResponsiveContainer width="100%" height="100%">
         <PieChart width={400} height={400}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
-            data={data}
+            data={this.state.data}
             cx="50%"
             cy="50%"
             innerRadius={60}
             outerRadius={80}
-            fill="#8884d8"
+            fill="#984063"
             dataKey="value"
             onMouseEnter={this.onPieEnter}
           />

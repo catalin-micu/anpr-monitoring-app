@@ -125,12 +125,12 @@ const useStyles = makeStyles((theme) => ({
   },
   pie: {
     height: '260px',
-   width: '500px',
+   width: '660px',
    
   },
   pieShift: {
     height: '260px',
-    width: '500px',
+    width: '660px',
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -151,16 +151,20 @@ const useStyles = makeStyles((theme) => ({
     }),
   }
 }));
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-export function CreateData() {
-  var data = [];
 
-  for (let i = 1; i < 336; i ++) {
-    data.push( {name: i, cost: getRandomInt(2), action: 'in parcare', timestamp: 'acum'} )
-}
-  return data;
+function calculatePercentages (events) {
+  var insideCounter = 0;
+  var outsideCounter = 0;
+  for (let i = 0; i < events.length; i++) {
+    
+    if (events[i].value == 0) {
+      outsideCounter += 1;
+    }
+    else {
+      insideCounter += 1;
+    }
+  }
+  return [{name: 'Inside parking lot', value: insideCounter}, {name: 'Outside parking lot', value: outsideCounter}]
 }
 
 export default function Residential() {
@@ -180,16 +184,12 @@ export default function Residential() {
   const [stepDate, setStepDate] = React.useState('');
   const [stepData, setStepData] = React.useState([]);
 
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:5000/getWeekActivity').then(response =>
-  //     response.json().then(data => {
-  //       setStepData(data);
-  //     }));
-      
-  // }, []);
+  const [pieData, setPieData] = React.useState([]);
 
-  // console.log(stepData);
+  const [lotData, setLotData] = React.useState([]);
+  const [gotLotDate, setGotLotDate] = React.useState(false);
   const [lotDate, setLotDate] = React.useState('');
+
   const [errorMsg, setErrorMsg] = React.useState('');
   const [errorMsg2, setErrorMsg2] = React.useState('');
 
@@ -199,17 +199,17 @@ export default function Residential() {
 
   function handleApplyParameters () {
     if ( datePattern.test(stepDate) && vrnPattern.test(stepVrn) ) {
-      
-      
-      // var data = fetch('http://127.0.0.1:5000/getWeekActivity').then(response => response.json())
-      // console.log(data);
       setGotStepVrn(true);
       setRenderedVrn(stepVrn);
 
-      return fetch('http://127.0.0.1:5000/getWeekActivity').then(response =>
+      return fetch('http://127.0.0.1:5000/getWeekActivity', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({vrn: stepVrn, date: stepDate})
+      }).then(response =>
       response.json()).then(data => {
         setStepData(data);
-        console.log(data);
+        setPieData(calculatePercentages(data));
       });
       
     }
@@ -229,7 +229,16 @@ export default function Residential() {
       return;
     }
     else {
-      console.log('da');
+      setGotLotDate(true);
+
+      return fetch('http://127.0.0.1:5000/getWeekLotSummary', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({date: lotDate})
+      }).then(response =>
+      response.json()).then(data => {
+        setLotData(data);
+      });
     }
   }
 
@@ -395,7 +404,7 @@ export default function Residential() {
           </div>
           <Container maxWidth="sm" className={classes.titleContainer} style={{marginTop: '20px'}}>
             <Typography variant="body1" align="center" color="textSecondary">
-              {gotStepVrn ? 'Monitored activity of number plate ' + renderedVrn : 'No parameters have been set' }
+              {gotStepVrn ? 'Monitored activity for number plate ' + renderedVrn : 'No parameters have been set' }
               
             </Typography>
           </Container>
@@ -406,11 +415,11 @@ export default function Residential() {
             <div className={clsx(classes.pie, {
               [classes.pieShift]: open,
             })}>
-              <IndividualPie />
+              <IndividualPie data={pieData} />
             </div>
             <Container maxWidth="xs" className={classes.titleContainer} style={{marginTop: '20px'}}>
               <Typography variant="body1" align="center" color="textSecondary">
-                Activity summary of number plate XXXXXXX
+                {gotStepVrn ? 'Activity summary for number plate ' + renderedVrn : 'No parameters have been set' }
               </Typography>
             </Container>
           </Grid>
@@ -419,11 +428,11 @@ export default function Residential() {
             <div className={clsx(classes.barChart, {
               [classes.barChartShift]: open,
             })}>
-              <SevenBarChart />
+              <SevenBarChart data={lotData} />
             </div>
             <Container maxWidth="xs" className={classes.titleContainer} style={{marginTop: '20px'}}>
               <Typography variant="body1" align="center" color="textSecondary">
-                Activity summary of entire parking lot
+              {gotLotDate ? 'Activity summary for the entire parking lot ' : 'No parameters have been set' }
               </Typography>
             </Container>
           </Grid>
