@@ -91,7 +91,7 @@ export default class Example extends PureComponent {
 
     return (
       <div className="highlight-bar-charts" style={{ userSelect: 'none', width: '100%' }}>
-        <Button variant="outlined" color="secondary" size="small" onClick={this.zoomOut.bind(this)}>
+        <Button  color="secondary" size="small" onClick={this.zoomOut.bind(this)}>
           Zoom Out
         </Button>
 
@@ -105,7 +105,7 @@ export default class Example extends PureComponent {
             onMouseUp={this.zoom.bind(this)}
           >
             {/* <CartesianGrid horizontal={false} vertical={false} /> */}
-            <XAxis allowDataOverflow dataKey="index" domain={[left, right]} type="number" ticks={ [48, 96, 144, 192, 240, 288, 336] } />
+            <XAxis allowDataOverflow dataKey="index" domain={[left, right]} type="number" ticks={ [48, 96, 144, 192, 240, 288, 336] } tick={{fill: '#ffffff'}} />
             <YAxis allowDataOverflow domain={[0, 1.2]} type="number" yAxisId="1" />
             <Tooltip content={<CustomTooltip  />} />
             <Line yAxisId="1" type="stepAfter" dataKey="value" stroke="#984063" animationDuration={2000} strokeWidth={3} />

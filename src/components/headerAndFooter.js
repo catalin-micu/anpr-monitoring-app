@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 const Header = () => {
     const classes = useStyle();
     return (
-        <AppBar position="relative" color="secondary">
+        <AppBar position="relative" style={{background: '#984063'}}>
                 <Toolbar>
                     <EmojiTransportationTwoToneIcon className={classes.icon}/>
                     <Typography variant="h6">
@@ -28,7 +28,7 @@ const Footer = () => {
     const classes = useStyle();
 
     return (
-        <AppBar className={classes.footer} position="relative" color="secondary">
+        <AppBar className={classes.footer} position="relative" style={{background: '#984063'}}>
             <Toolbar>
                 <Grid container spacing={2} justify="center">
                     <Grid item>

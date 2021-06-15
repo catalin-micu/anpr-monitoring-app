@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     }
     ),
     marginLeft: -drawerWidth,
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#2f3e52',
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#2f3e52',
   },
   headerIcon: {
     marginRight: theme.spacing(2),
@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
       height: '250px',
        width: '98%',
        backgroundColor: 'white',
-       borderRadius: '10px'
+       borderRadius: '10px',
   },
   chartShift : {
     height: '250px',
@@ -258,7 +258,7 @@ export default function Residential() {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
-        color="secondary"
+        style={{background: '#984063'}}
       >
         <Toolbar>
           <IconButton color="inherit"
@@ -288,7 +288,7 @@ export default function Residential() {
           paper: classes.drawerPaper,
         }}
       >
-        <AppBar className={classes.drawerHeader} color="secondary" position="relative">
+        <AppBar className={classes.drawerHeader} style={{background: '#984063'}} position="relative">
             <Typography variant="h6">Graph parameters</Typography>
           <IconButton onClick={handleDrawerClose} className={classes.closeDrawerIcon}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -394,7 +394,7 @@ export default function Residential() {
             Expand the left side menu and insert the required parameters
           </Typography>
         </Container>
-        <Divider/>
+        <Divider style={{backgroundColor: '#ffffff', width: '98%'}} />
        
        <Grid container style={{marginTop: '3px'}} direction="column" >
           <div className={clsx(classes.chart, {

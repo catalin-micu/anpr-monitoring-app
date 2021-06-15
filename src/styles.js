@@ -4,7 +4,7 @@ const drawerWidth = 240;
 
 const useStyle = makeStyles((theme) => ({
     main: {
-        backgroundColor: '#DCDCDC',
+        backgroundColor: '#2f3e52',
         
     },
     container: {
