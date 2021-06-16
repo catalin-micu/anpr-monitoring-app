@@ -115,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
   },
   chart: {
       height: '260px',
-       width: '1050px',
+       width: '98%',
        backgroundColor: 'white',
        borderRadius: '10px',
   },
@@ -130,13 +130,14 @@ const useStyles = makeStyles((theme) => ({
   },
   areaChart: {
     height: '260px',
-    width: '500px',
+    width: '750px',
     backgroundColor: 'white',
     borderRadius: '10px'
   },
+
   areaChartShift: {
     height: '260px',
-    width: '500px',
+    width: '750px',
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -144,13 +145,13 @@ const useStyles = makeStyles((theme) => ({
   },
   bar: {
       height: '260px',
-      width: '900px',
+      width: '600px',
       backgroundColor: 'white',
       borderRadius: '10px'
   },
   barShift: {
     height: '260px',
-    width: '900px',
+    width: '600px',
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -183,14 +184,13 @@ export default function Residential() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
-  const [stepVrn, setStepVrn] = React.useState('');
-  const [gotStepVrn, setGotStepVrn] = React.useState(false);
-  const [renderedVrn, setRenderedVrn] = React.useState('');
+  const [zoomDate, setZoomDate] = React.useState('');
+  const [gotZoomDate, setGotZoomDate] = React.useState(false);
+  const [renderedDate, setRenderedDate] = React.useState('');
+  const [zoomData, setZoomData] = React.useState([]);
 
-  const [stepDate, setStepDate] = React.useState('');
-  const [stepData, setStepData] = React.useState([]);
+  const [areaData, setAreaData] = React.useState([]);
 
-  const [pieData, setPieData] = React.useState([]);
 
   const [lotData, setLotData] = React.useState([]);
   const [gotLotDate, setGotLotDate] = React.useState(false);
@@ -200,53 +200,41 @@ export default function Residential() {
   const [errorMsg2, setErrorMsg2] = React.useState('');
 
 
-  const vrnPattern = /^[A-Z]{2}\d{2}[A-Z]{3}$|^B\d{2,3}[A-Z]{3}$|^[A-Z]{2}\d{6}$|^B\d{6}$/g;
   const datePattern = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/g;
 
-  function handleApplyParameters () {
-    if ( datePattern.test(stepDate) && vrnPattern.test(stepVrn) ) {
-      setGotStepVrn(true);
-      setRenderedVrn(stepVrn);
 
-      return fetch('http://127.0.0.1:5000/getWeekActivity', {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({vrn: stepVrn, date: stepDate})
-      }).then(response =>
-      response.json()).then(data => {
-        setStepData(data);
-        setPieData(calculatePercentages(data));
-      });
-      
-    }
-    if (!vrnPattern.test(stepVrn)) {
-      setErrorMsg('Invalid number plate!');
-      return;
-    }
-    if (!datePattern.test(stepDate)) {
+  function handleApplyDateParameter () {
+    if (!datePattern.test(zoomDate)) {
       setErrorMsg('Invalid date!');
       return;
     }
-  }
-
-  function handleApplyDateParameter () {
-    if (!datePattern.test(lotDate)) {
-      setErrorMsg2('Invalid date!');
-      return;
-    }
     else {
-      setGotLotDate(true);
+      setGotZoomDate(true);
+      setRenderedDate(zoomDate);
 
-      return fetch('http://127.0.0.1:5000/getWeekLotSummary', {
+      return fetch('http://127.0.0.1:5000/commercialDay', {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({date: lotDate})
+        body: JSON.stringify({date: zoomDate})
       }).then(response =>
       response.json()).then(data => {
-        setLotData(data);
+        setZoomData(data);
       });
     }
   }
+
+  function handleApplyDateParameter2 () {
+
+    return fetch('http://127.0.0.1:5000/commercialDayPercentages', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({date: zoomDate})
+      }).then(response =>
+      response.json()).then(data => {
+        setAreaData(data);
+      });
+  }
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -323,11 +311,11 @@ export default function Residential() {
             label="Date(dd-mm-yyyy)"
             autoFocus
             size="small"
-            onChange={event => setStepDate(event.target.value)}
+            onChange={event => setZoomDate(event.target.value)}
           />
           </ListItem>
           <ListItem key="indivApply" alignItems="center">
-            <CommercialApplyButton callback={handleApplyParameters} />
+            <CommercialApplyButton callback1={handleApplyDateParameter} callback2={handleApplyDateParameter2} />
           </ListItem>
         </List>
 
@@ -390,25 +378,39 @@ export default function Residential() {
 
 
 
-        <Grid container spacing={2} justify="center"  >
-          <Grid item style={{marginTop: '3px'}} direction="column" alignContent="flex-start" >
+        <Grid container style={{marginTop: '3px'}} direction="column" >
           <div className={clsx(classes.chart, {
             [classes.chartShift]: open,
           })}>
-            <LotZoomChart />
+            <LotZoomChart data={zoomData} />
           </div>
             <Container maxWidth="xs" className={classes.titleContainer} style={{marginTop: '20px'}}>
               <Typography variant="body1" align="center" color="textSecondary">
-                {gotStepVrn ? 'Activity summary for number plate ' + renderedVrn : 'No parameters have been set' }
+                {gotZoomDate ? 'Monitored occupancy for ' + renderedDate : 'No parameters have been set' }
               </Typography>
             </Container>
           </Grid>
           
-          <Grid item style={{marginTop: '3px'}} direction="column" alignContent="flex-start" >
-            <div className={clsx(classes.areaChart, {
-              [classes.areaChartShift]: open,
-            })}>
-              <LotAreaChart/>
+          <Grid container justify="center" spacing={6}>
+            <Grid item>
+              <div className={clsx(classes.areaChart, {
+                [classes.areaChartShift]: open,
+              })}>
+                <LotAreaChart data={areaData} />
+              </div>
+              <Container maxWidth="sm" className={classes.titleContainer} style={{marginTop: '15px'}}>
+                  <Typography variant="body1" align="center" color="textSecondary">
+                  {gotZoomDate ? 'Occupancy percentages for ' + renderedDate : 'No parameters have been set' }
+                  
+                  </Typography>
+              </Container>
+            </Grid>
+
+            <Grid item  >
+            <div className={clsx(classes.bar, {
+                    [classes.barShift]: open,
+                })}>
+                <LotBar />
             </div>
             <Container maxWidth="xs" className={classes.titleContainer} style={{marginTop: '20px'}}>
               <Typography variant="body1" align="center" color="textSecondary">
@@ -416,27 +418,6 @@ export default function Residential() {
               </Typography>
             </Container>
           </Grid>
-        </Grid>
-
-
-
-
-
-
-        <Grid container  direction="column" alignContent="center" >
-            <Grid item>
-                <div className={clsx(classes.bar, {
-                    [classes.barShift]: open,
-                })}>
-                <LotBar />
-            </div>
-            <Container maxWidth="sm" className={classes.titleContainer} style={{marginTop: '15px'}}>
-                <Typography variant="body1" align="center" color="textSecondary">
-                {gotStepVrn ? 'Monitored activity for number plate ' + renderedVrn : 'No parameters have been set' }
-                
-                </Typography>
-            </Container>
-            </Grid>
         </Grid>
 
        

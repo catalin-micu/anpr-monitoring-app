@@ -11,32 +11,14 @@ import {
   ReferenceArea,
   ResponsiveContainer,
 } from 'recharts';
+import useStyle from './../styles';
 
-const initialData = [
-  { name: 1, cost: 4.11, impression: 100 },
-  { name: 2, cost: 2.39, impression: 120 },
-  { name: 3, cost: 1.37, impression: 150 },
-  { name: 4, cost: 1.16, impression: 180 },
-  { name: 5, cost: 2.29, impression: 200 },
-  { name: 6, cost: 3, impression: 499 },
-  { name: 7, cost: 0.53, impression: 50 },
-  { name: 8, cost: 2.52, impression: 100 },
-  { name: 9, cost: 1.79, impression: 200 },
-  { name: 10, cost: 2.94, impression: 222 },
-  { name: 11, cost: 4.3, impression: 210 },
-  { name: 12, cost: 4.41, impression: 300 },
-  { name: 13, cost: 2.1, impression: 50 },
-  { name: 14, cost: 8, impression: 190 },
-  { name: 15, cost: 0, impression: 300 },
-  { name: 16, cost: 9, impression: 400 },
-  { name: 17, cost: 3, impression: 200 },
-  { name: 18, cost: 2, impression: 50 },
-  { name: 19, cost: 3, impression: 100 },
-  { name: 20, cost: 7, impression: 100 },
-];
+// index, value, timestamp
 
-const getAxisYDomain = (from, to, ref, offset) => {
-  const refData = initialData.slice(from - 1, to);
+const initialData = [];
+
+const getAxisYDomain = (from, to, ref, offset, data) => {
+  const refData = data.slice(from - 1, to);
   let [bottom, top] = [refData[0][ref], refData[0][ref]];
   refData.forEach((d) => {
     if (d[ref] > top) top = d[ref];
@@ -52,11 +34,28 @@ const initialState = {
   right: 'dataMax',
   refAreaLeft: '',
   refAreaRight: '',
-  top: 'dataMax+1',
-  bottom: 'dataMin-1',
-  top2: 'dataMax+20',
-  bottom2: 'dataMin-20',
+  top: 'dataMax+100',
+  bottom: 0,
   animation: true,
+};
+
+const CustomTooltip = ({ active, payload }) => {
+  const classes = useStyle();
+  if (active && payload && payload.length) {
+    return (
+      <Container className={classes.tooltip}>
+        <Typography variant="subtitle1" color="secondary">
+          { payload[0]['payload']['value'] } vehicles inside
+        </Typography>
+        <Typography variant="subtitle1" color="secondary">
+          Time: { payload[0]['payload']['active_time'] }
+        </Typography>
+        
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 export default class LotZoomChart extends PureComponent {
@@ -82,8 +81,7 @@ export default class LotZoomChart extends PureComponent {
     if (refAreaLeft > refAreaRight) [refAreaLeft, refAreaRight] = [refAreaRight, refAreaLeft];
 
     // yAxis domain
-    const [bottom, top] = getAxisYDomain(refAreaLeft, refAreaRight, 'cost', 1);
-    const [bottom2, top2] = getAxisYDomain(refAreaLeft, refAreaRight, 'impression', 50);
+    const [bottom, top] = getAxisYDomain(refAreaLeft, refAreaRight, 'value', 1, this.state.data);
 
     this.setState(() => ({
       refAreaLeft: '',
@@ -93,8 +91,6 @@ export default class LotZoomChart extends PureComponent {
       right: refAreaRight,
       bottom,
       top,
-      bottom2,
-      top2,
     }));
   }
 
@@ -106,15 +102,14 @@ export default class LotZoomChart extends PureComponent {
       refAreaRight: '',
       left: 'dataMin',
       right: 'dataMax',
-      top: 'dataMax+1',
-      bottom: 'dataMin',
-      top2: 'dataMax+50',
-      bottom2: 'dataMin+50',
+      top: 'dataMax+100',
+      bottom: 0,
     }));
   }
 
   render() {
-    const { data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom, top2, bottom2 } = this.state;
+    this.setState({data: this.props.data})
+    const { data, barIndex, left, right, refAreaLeft, refAreaRight, top, bottom } = this.state;
 
     return (
       <div style={{ userSelect: 'none', width: '100%' }}>
@@ -132,10 +127,10 @@ export default class LotZoomChart extends PureComponent {
             onMouseUp={this.zoom.bind(this)}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis allowDataOverflow dataKey="name" domain={[left, right]} type="number" />
+            <XAxis allowDataOverflow dataKey="index" domain={[left, right]} type="number" ticks={ [5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57] } />
             <YAxis allowDataOverflow domain={[bottom, top]} type="number" yAxisId="1" />
-            <Tooltip />
-            <Line yAxisId="1" type="natural" dataKey="cost" stroke="#8884d8" animationDuration={300} />
+            <Tooltip content={<CustomTooltip  />} />
+            <Line yAxisId="1" type="natural" dataKey="value" stroke="#8884d8" animationDuration={1000} stroke="#984063" />
 
             {refAreaLeft && refAreaRight ? (
               <ReferenceArea yAxisId="1" x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />

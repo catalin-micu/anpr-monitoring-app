@@ -57,7 +57,8 @@ const CommercialApplyButton = (props) => {
     const classes = useStyle();
 
     return (
-        <Button variant="outlined" color="secondary" size="small" className={classes.applyButton} onClick={props.callback}>
+        <Button variant="outlined" color="secondary" size="small" className={classes.applyButton}
+         onClick={function(event){props.callback1(); props.callback2()} }>
             Apply date parameter
         </Button>
     );

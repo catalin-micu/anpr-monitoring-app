@@ -3,46 +3,39 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 
 const data = [
   {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    name: 'Monday',
+    "Average stay in minutes": 75,
+    "Maximum numbers of cars in lot": 1750,
   },
   {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    name: 'Tuesday',
+    "Average stay in minutes": 90,
+    "Maximum numbers of cars in lot": 1804,
   },
   {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    name: 'Wednesday',
+    "Average stay in minutes": 68,
+    "Maximum numbers of cars in lot": 1629,
   },
   {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
+    name: 'Thursday',
+    "Average stay in minutes": 105,
+    "Maximum numbers of cars in lot": 1777,
   },
   {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
+    name: 'Friday',
+    "Average stay in minutes": 135,
+    "Maximum numbers of cars in lot": 2187,
   },
   {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
+    name: 'Saturday',
+    "Average stay in minutes": 184,
+    "Maximum numbers of cars in lot": 2749,
   },
   {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
+    name: 'Sunday',
+    "Average stay in minutes": 210,
+    "Maximum numbers of cars in lot": 2875,
   },
 ];
 
@@ -64,12 +57,12 @@ export default class LotBar extends PureComponent {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
-          <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+          <YAxis yAxisId="left" orientation="left" stroke="#FE9677" />
+          <YAxis yAxisId="right" orientation="right" stroke="#984063" />
           <Tooltip />
           <Legend />
-          <Bar yAxisId="left" dataKey="pv" fill="#8884d8" />
-          <Bar yAxisId="right" dataKey="uv" fill="#82ca9d" />
+          <Bar yAxisId="left" dataKey="Average stay in minutes" fill="#FE9677" />
+          <Bar yAxisId="right" dataKey="Maximum numbers of cars in lot" fill="#984063" />
         </BarChart>
       </ResponsiveContainer>
     );

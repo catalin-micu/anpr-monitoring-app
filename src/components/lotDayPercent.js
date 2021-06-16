@@ -3,48 +3,15 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const data = [
   {
-    month: '2015.01',
-    a: 4000,
-    b: 2400,
-    c: 2400,
-  },
-  {
-    month: '2015.02',
-    a: 3000,
-    b: 1398,
-    c: 2210,
-  },
-  {
-    month: '2015.03',
-    a: 2000,
-    b: 9800,
-    c: 2290,
-  },
-  {
-    month: '2015.04',
-    a: 2780,
-    b: 3908,
-    c: 2000,
-  },
-  {
-    month: '2015.05',
-    a: 1890,
-    b: 4800,
-    c: 2181,
-  },
-  {
-    month: '2015.06',
-    a: 2390,
-    b: 3800,
-    c: 2500,
-  },
-  {
-    month: '2015.07',
-    a: 3490,
-    b: 4300,
-    c: 2100,
-  },
+    time: 'Default',
+    in: 1,
+    out: 1
+  }
 ];
+
+var initialState = {
+  data: data
+}
 
 const toPercent = (decimal) => `${(decimal * 100).toFixed(1)}%`;
 
@@ -74,13 +41,21 @@ const renderTooltipContent = (o) => {
 
 export default class LotAreaChart extends PureComponent {
 
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+  }
+
   render() {
+    if (this.props.data.length > 0) {
+      this.setState({data: this.props.data});
+    }
     return (
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={500}
           height={400}
-          data={data}
+          data={this.state.data}
           stackOffset="expand"
           margin={{
             top: 10,
@@ -90,12 +65,11 @@ export default class LotAreaChart extends PureComponent {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
+          <XAxis dataKey="time" />
           <YAxis tickFormatter={toPercent} />
           <Tooltip content={renderTooltipContent} />
-          <Area type="monotone" dataKey="a" stackId="1" stroke="#8884d8" fill="#8884d8" />
-          <Area type="monotone" dataKey="b" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
-          <Area type="monotone" dataKey="c" stackId="1" stroke="#ffc658" fill="#ffc658" />
+          <Area type="monotone" dataKey="in" stackId="1" stroke="#984063" fill="#984063" />
+          <Area type="monotone" dataKey="out" stackId="1" stroke="#FE9677" fill="#FE9677" />
         </AreaChart>
       </ResponsiveContainer>
     );
