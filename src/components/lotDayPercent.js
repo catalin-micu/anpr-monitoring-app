@@ -3,7 +3,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const data = [
   {
-    time: 'Default',
+    time: 'Uncomputed',
     in: 1,
     out: 1
   }
@@ -68,8 +68,8 @@ export default class LotAreaChart extends PureComponent {
           <XAxis dataKey="time" />
           <YAxis tickFormatter={toPercent} />
           <Tooltip content={renderTooltipContent} />
-          <Area type="monotone" dataKey="in" stackId="1" stroke="#984063" fill="#984063" />
-          <Area type="monotone" dataKey="out" stackId="1" stroke="#FE9677" fill="#FE9677" />
+          <Area type="monotone" dataKey="occupied" stackId="1" stroke="#984063" fill="#984063" />
+          <Area type="monotone" dataKey="unoccupied" stackId="1" stroke="#FE9677" fill="#FE9677" />
         </AreaChart>
       </ResponsiveContainer>
     );

@@ -81,7 +81,7 @@ export default class LotZoomChart extends PureComponent {
     if (refAreaLeft > refAreaRight) [refAreaLeft, refAreaRight] = [refAreaRight, refAreaLeft];
 
     // yAxis domain
-    const [bottom, top] = getAxisYDomain(refAreaLeft, refAreaRight, 'value', 1, this.state.data);
+    const [bottom, top] = getAxisYDomain(refAreaLeft, refAreaRight, 'value', 30, this.state.data);
 
     this.setState(() => ({
       refAreaLeft: '',

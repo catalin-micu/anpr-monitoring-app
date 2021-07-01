@@ -4,50 +4,62 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 const data = [
   {
     name: 'Monday',
-    "Average stay in minutes": 75,
-    "Maximum numbers of cars in lot": 1750,
+    "Average stay in minutes": 'Uncomputed',
+    "Maximum numbers of cars in lot": 'Uncomputed',
   },
   {
     name: 'Tuesday',
-    "Average stay in minutes": 90,
-    "Maximum numbers of cars in lot": 1804,
+    "Average stay in minutes": 'Uncomputed',
+    "Maximum numbers of cars in lot": 'Uncomputed',
   },
   {
     name: 'Wednesday',
-    "Average stay in minutes": 68,
-    "Maximum numbers of cars in lot": 1629,
+    "Average stay in minutes": 'Uncomputed',
+    "Maximum numbers of cars in lot": 'Uncomputed',
   },
   {
     name: 'Thursday',
-    "Average stay in minutes": 105,
-    "Maximum numbers of cars in lot": 1777,
+    "Average stay in minutes": 'Uncomputed',
+    "Maximum numbers of cars in lot": 'Uncomputed',
   },
   {
     name: 'Friday',
-    "Average stay in minutes": 135,
-    "Maximum numbers of cars in lot": 2187,
+    "Average stay in minutes": 'Uncomputed',
+    "Maximum numbers of cars in lot": 'Uncomputed',
   },
   {
     name: 'Saturday',
-    "Average stay in minutes": 184,
-    "Maximum numbers of cars in lot": 2749,
+    "Average stay in minutes": 'Uncomputed',
+    "Maximum numbers of cars in lot": 'Uncomputed',
   },
   {
     name: 'Sunday',
-    "Average stay in minutes": 210,
-    "Maximum numbers of cars in lot": 2875,
+    "Average stay in minutes": 'Uncomputed',
+    "Maximum numbers of cars in lot": 'Uncomputed',
   },
 ];
 
+var initialState = {
+  data: data
+}
+
 export default class LotBar extends PureComponent {
 
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+  }
+
   render() {
+    if (this.props.data.length > 0) {
+      this.setState({data: this.props.data});
+    }
     return (
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           width={500}
           height={300}
-          data={data}
+          data={this.state.data}
           margin={{
             top: 20,
             right: 30,

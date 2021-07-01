@@ -145,13 +145,13 @@ const useStyles = makeStyles((theme) => ({
   },
   bar: {
       height: '260px',
-      width: '600px',
+      width: '700px',
       backgroundColor: 'white',
       borderRadius: '10px'
   },
   barShift: {
     height: '260px',
-    width: '600px',
+    width: '700px',
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -159,22 +159,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function calculatePercentages (events) {
-  var insideCounter = 0;
-  var outsideCounter = 0;
-  for (let i = 0; i < events.length; i++) {
-    
-    if (events[i].value == 0) {
-      outsideCounter += 1;
-    }
-    else {
-      insideCounter += 1;
-    }
-  }
-  return [{name: 'Inside parking lot', value: insideCounter}, {name: 'Outside parking lot', value: outsideCounter}]
-}
-
-export default function Residential() {
+export default function Commercial() {
     useEffect( () => {
         document.title = 'ANPR commercial monitoring app'
     });
@@ -195,6 +180,7 @@ export default function Residential() {
   const [lotData, setLotData] = React.useState([]);
   const [gotLotDate, setGotLotDate] = React.useState(false);
   const [lotDate, setLotDate] = React.useState('');
+  const [renderedLotDate, setRenderedLotDate] = React.useState('')
 
   const [errorMsg, setErrorMsg] = React.useState('');
   const [errorMsg2, setErrorMsg2] = React.useState('');
@@ -233,6 +219,25 @@ export default function Residential() {
       response.json()).then(data => {
         setAreaData(data);
       });
+  }
+
+  function handleApplyDateParameterWeek () {
+    if (!datePattern.test(lotDate)) {
+      setErrorMsg('Invalid date!');
+      return;
+    }
+    else {
+      setGotLotDate(true);
+      setRenderedLotDate(lotDate);
+    return fetch('http://127.0.0.1:5000/commercialWeek', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({date: lotDate})
+      }).then(response =>
+      response.json()).then(data => {
+        setLotData(data);
+      });
+    }
   }
 
 
@@ -346,7 +351,7 @@ export default function Residential() {
           />
           </ListItem>
           <ListItem key="lotApply" alignItems="center">
-            <CommercialApplyButton callback={handleApplyDateParameter} />
+            <LotApplyButton callback={handleApplyDateParameterWeek} />
           </ListItem>
         </List>
       </Drawer>
@@ -410,20 +415,16 @@ export default function Residential() {
             <div className={clsx(classes.bar, {
                     [classes.barShift]: open,
                 })}>
-                <LotBar />
+                <LotBar data={lotData} />
             </div>
             <Container maxWidth="xs" className={classes.titleContainer} style={{marginTop: '20px'}}>
               <Typography variant="body1" align="center" color="textSecondary">
-              {gotLotDate ? 'Activity summary for the entire parking lot ' : 'No parameters have been set' }
+              {gotLotDate ? 'Statistic values' : 'No parameters have been set' }
               </Typography>
             </Container>
           </Grid>
         </Grid>
 
-       
-       
-
-       
         
       </main>
       
